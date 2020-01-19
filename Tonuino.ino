@@ -150,9 +150,9 @@ void resetSettings() {
   Serial.println(F("=== resetSettings()"));
   mySettings.cookie = cardCookie;
   mySettings.version = 2;
-  mySettings.maxVolume = 30;
+  mySettings.maxVolume = 29;
   mySettings.minVolume = 5;
-  mySettings.initVolume = 24;
+  mySettings.initVolume = 29;
   mySettings.eq = 1;
   mySettings.locked = false;
   mySettings.standbyTimer = 0;
@@ -192,7 +192,7 @@ void loadSettingsFromFlash() {
     resetSettings();
   migrateSettings(mySettings.version);
 
-  mySettings.maxVolume = 30;
+  mySettings.maxVolume = 29;
   mySettings.initVolume = mySettings.maxVolume;
 
   Serial.print(F("Version: "));
