@@ -152,7 +152,7 @@ void resetSettings() {
   mySettings.version = 2;
   mySettings.maxVolume = 25;
   mySettings.minVolume = 5;
-  mySettings.initVolume = 15;
+  mySettings.initVolume = 24;
   mySettings.eq = 1;
   mySettings.locked = false;
   mySettings.standbyTimer = 0;
@@ -191,6 +191,7 @@ void loadSettingsFromFlash() {
   if (mySettings.cookie != cardCookie)
     resetSettings();
   migrateSettings(mySettings.version);
+  mySettings.initVolume = mySettings.maxVolume - 1;
 
   Serial.print(F("Version: "));
   Serial.println(mySettings.version);
@@ -1007,15 +1008,10 @@ void loop() {
       ignorePauseButton = true;
     }
 
+//BARGSTEN
     if (upButton.pressedFor(LONG_PRESS)) {
 #ifndef FIVEBUTTONS
       if (isPlaying()) {
-        if (!mySettings.invertVolumeButtons) {
-          volumeUpButton();
-        }
-        else {
-          nextButton();
-        }
       }
       else {
         playShortCut(1);
@@ -1024,24 +1020,13 @@ void loop() {
 #endif
     } else if (upButton.wasReleased()) {
       if (!ignoreUpButton)
-        if (!mySettings.invertVolumeButtons) {
           nextButton();
-        }
-        else {
-          volumeUpButton();
-        }
       ignoreUpButton = false;
     }
 
     if (downButton.pressedFor(LONG_PRESS)) {
 #ifndef FIVEBUTTONS
       if (isPlaying()) {
-        if (!mySettings.invertVolumeButtons) {
-          volumeDownButton();
-        }
-        else {
-          previousButton();
-        }
       }
       else {
         playShortCut(2);
@@ -1050,12 +1035,7 @@ void loop() {
 #endif
     } else if (downButton.wasReleased()) {
       if (!ignoreDownButton) {
-        if (!mySettings.invertVolumeButtons) {
           previousButton();
-        }
-        else {
-          volumeDownButton();
-        }
       }
       ignoreDownButton = false;
     }
@@ -1290,7 +1270,7 @@ void adminMenu(bool fromCard = false) {
       mySettings.invertVolumeButtons = true;
     }
     else {
-      mySettings.invertVolumeButtons = false;
+      mySettings.invertVolumeButtons = true;
     }
   }
   else if (subMenu == 11) {
